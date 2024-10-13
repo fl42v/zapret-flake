@@ -10,7 +10,7 @@
      flake = false;
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     nixpkgs,
     zapret-src,
@@ -24,7 +24,7 @@
     packages = forAllSystems (system: let
       pkgs = import nixpkgs {inherit system;};
     in {
-      zapret = pkgs.stdenv.mkDerivation rec {
+      zapret = pkgs.stdenv.mkDerivation {
         pname = "zapret";
         version = "";
         src = zapret-src;

@@ -5,9 +5,7 @@ flake: {
   pkgs,
   ...
 }: let
-  inherit (builtins) toJSON removeAttrs;
-  inherit (lib) filterAttrs types mkEnableOption mkOption mkRenamedOptionModule;
-  inherit (lib.trivial) pipe;
+  inherit (lib) types mkEnableOption mkOption;
   inherit (flake.packages.${pkgs.stdenv.hostPlatform.system}) zapret;
   cfg = config.services.zapret;
 in {
@@ -37,7 +35,7 @@ in {
         RemainAfterExit = "no";
         IgnoreSIGPIPE = "no";
         TimeoutSec = "30sec";
-        EnvironmentFile = builtins.toFile "zapret-config" cfg.config;
+        EnvironmentFile = pkgs.writeText "zapret-config" cfg.config;
         ExecStart = ''
           ${zapret.out}/src/init.d/sysv/zapret start
         '';
